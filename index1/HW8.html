@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+
+    <title>HW 8 CSCI571</title>
+
+  <!--  <link href = "css/font-awesome.min.css" rel ="stylesheet">-->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+          <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+
+          <!-- load angular-moment -->
+          <script src="//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js"></script>
+
+   <script src="pren.js">
+
+
+   </script>
+
+    <style>
+/*{
+color:gray;
+}*/
+
+.mark
+{
+ color:yellow;
+}
+
+</style>
+
+</head>
+  <body ng-app="Appln" ng-controller="Ctrl1">
+
+
+
+<div class="container">
+  <nav class="navbar navbar-default" style="background-color:#F8F8F8;border-radius:0;">
+
+    <div class="navbar-header">
+    <a style="color:#3B5998;padding-right:170px;"  class="navbar-brand">FB-Search</a>
+    </div>
+    <form class="navbar-form navbar-left" id="myfrm" role="search" ng-submit="myFunc()">
+
+
+<div class="input-group">
+    <input type="text" class="form-control" ng-model="frmdata.input1" style="border-radius:0;border: 2px solid #DDDDDD;width:170px;" placeholder="type something..." required>
+
+<button type="submit" class="btn btn-default"style="background-color:#3B5998;border-radius:0;border: 1px solid #3B5998;color:white;" ><span style="padding:2px 0px 0px 2px; " class="glyphicon glyphicon-search" ></span></button>&nbsp;&nbsp;&nbsp;
+
+<button type="clear" class="btn btn-default" ng-click="resetfrm()" style="color:#3B5998;border:1px solid #3B5998;border-radius:0;">Clear</button>
+</div>
+
+</form>
+</nav>
+<!--<div class="container" style="width:1250px;">
+<div id="container1" class="carousel slide" data-ride="carousel" data-interval="false">
+  <div class="carousel-inner" role="listbox" data-interval="false">
+      <div class="item active">
+          <div class="tab-content">
+
+  <div id="user" class="tab-pane fade in active">
+<table ng-show="header" class="table table-hover">
+    <tr><th>#</th><th>Profile Photo</th><th>Name</th><th>Favourites</th><th>Details</th></tr>
+    <tr ng-repeat="x in udata track by $index">
+        <td>{{$index}}</td>-->
+      <!--  <td><img src={{x.picture.url}} width="40px" height="30px"></td>-->
+      <!--  <td>{{x.name}}</td>
+        <td><button class="btn btn-default" style="width:40px;height:40px;"><span class="glyphicon glyphicon-star-empty"></span></button></td>
+        <td><a href="#container1" role="button" data-slide="next">
+              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              <span class="sr-only">Next</span></a>
+        </td>
+        </tr>
+  </table>
+</div>
+</div>
+</div>
+</div>
+</div>-->
+
+<div class="container">
+
+<ul class="nav-justified nav nav-pills" >
+    <li role="presentation" class="col-sm-2 active" ><a ng-click="change()" data-toggle="pill" data-slide="prev" href="#user" style=" border-radius:0;">Users</a></li>
+  <li role="presentation" class="col-sm-2" ><a ng-click="change()" data-toggle="pill" href="#page" data-slide="prev" style="border-radius:0;">Pages</a></li>
+  <li role="presentation" class="col-sm-2" ><a ng-click="change()" data-toggle="pill" href="#event" data-slide="prev" style="border-radius:0;">Events</a></li>
+     <li role="presentation" class="col-sm-2" ><a ng-click="change()" data-toggle="pill" href="#place" data-slide="prev" style="border-radius:0;">Places</a></li>
+     <li role="presentation" class="col-sm-2" ><a ng-click="change()" data-toggle="pill" href="#group" data-slide="prev" style="border-radius:0;">Groups</a></li>
+     <li role="presentation" class="col-sm-2" ><a ng-click="change()" data-toggle="pill" href="#favourite" data-slide="prev" style="border-radius:0;">Favourites</a></li>
+</ul>
+
+<!-- Wrapper for slides -->
+
+  <div id="container1" class="carousel slide" data-interval="false" data-ride="carousel" >
+<!-- Indicators -->
+<!--<ol class="carousel-indicators sr-only">
+    <li data-target="#state1" data-slide-to="0" class="active"></li>
+    <li data-target="#state2" data-slide-to="1"></li>
+</ol>-->
+<div class="carousel-inner" role="listbox" data-interval="false">
+<div class="item active">
+
+<div class="tab-content">
+  <div id="user" class="panel panel-default tab-pane fade in active" ng-show="utab">
+<!--  <div class="panel-body"> -->
+  <table ng-show="header" class="table table-hover">
+      <tr><th>#</th><th>Profile Photo</th><th>Name</th><th>Favourites</th><th>Details</th></tr>
+      <tr ng-repeat="i in udata track by $index"><td>{{$index+1}}</td>
+        <td><img src={{i.picture.url?i.picture.url:i.picture.data.url}} style="height:40px;width:40px;"></td>
+        <td>{{i.name}}</td>
+        <td><button class="btn btn-default" id={{i.id}} ng-class = "{mark: localstorage_marked(i.id)}"  ng-click="localstorage_add(i,'users')" style="width:38px;height:38px;" ><span class="glyphicon glyphicon-star"></span></button></td>
+        <td><a href="#container1" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" style="border:1px solid #DDDDDD;color:black;padding:5px 5px 5px 5px;" aria-hidden="true" ng-click="albPosts(i.id,'user',i)"></span>
+        <span class="sr-only">Next</span></a>
+        </td>
+        </tr>
+        </table>
+        <ul class="pager" ng-show="pager">
+        <li><a ng-show="prevusr"  ng-click="prevnext('user',prevusrlink)" style="border-radius:5px;border:2px solid #DDDDDD;color:black;">Previous</a></li>
+        <li><a ng-show="nextusr"  ng-click="prevnext('user',nextusrlink)" style="border-radius:5px;border:2px solid #DDDDDD;color:black;">Next</a></li>
+        </ul>
+        </div>
+<div id="page" class="panel panel-default  tab-pane fade" ng-show="ptab">
+<!--<div class="panel-body">-->
+  <table ng-show="header" class="table table-hover">
+      <tr><th>#</th><th>Profile Photo</th><th>Name</th><th>Favourites</th><th>Details</th></tr>
+      <tr ng-repeat="i in pdata track by $index"><td>{{$index+1}}</td>
+        <td><img src={{i.picture.url?i.picture.url:i.picture.data.url}} style="height:40px;width:40px;"></td>
+        <td>{{i.name}}</td>
+        <td><button class="btn btn-default" id={{i.id}} ng-class = "{mark: localstorage_marked(i.id)}" ng-click="localstorage_add(i,'pages')" style="width:38px;height:38px;"><span class="glyphicon glyphicon-star"></span></button></td>
+        <td><a  href="#container1" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" style="border:1px solid #DDDDDD;color:black;padding:5px 5px 5px 5px;" aria-hidden="true" ng-click="albPosts(i.id,'page',i)"></span>
+        <span class="sr-only">Next</span></a>
+        </td>
+        </tr>
+        </table>
+        <ul class="pager" ng-show="pager">
+        <li><a ng-show="prevpg" ng-click="prevnext('page',prevpglink)" style="border-radius:5px;border:2px solid #DDDDDD;color:black;">Previous</a></li>
+        <li><a ng-show="nextpg" ng-click="prevnext('page',nextpglink)" style="border-radius:5px;border:2px solid #DDDDDD;color:black;">Next</a></li>
+        </ul>
+        </div>
+<div id="event" class="panel panel-default  tab-pane fade" ng-show="etab">
+<!--<div class="panel-body">-->
+  <table ng-show="header" class="table table-hover">
+      <tr><th>#</th><th>Profile Photo</th><th>Name</th><th>Favourites</th><th>Details</th></tr>
+      <tr ng-repeat="i in edata track by $index"><td>{{$index+1}}</td>
+        <td><img src={{i.picture.url?i.picture.url:i.picture.data.url}} style="height:40px;width:40px;"></td>
+        <td>{{i.name}}</td>
+        <td><button class="btn btn-default" id={{i.id}} ng-class = "{mark: localstorage_marked(i.id)}" ng-click="localstorage_add(i,'events')" style="width:38px;height:38px;" ><span class="glyphicon glyphicon-star"></span></button></td>
+        <td><a  href="#container1" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" style="border:1px solid #DDDDDD;color:black;padding:5px 5px 5px 5px;" aria-hidden="true" ng-click="albPosts(i.id,'event',i)"></span>
+        <span class="sr-only">Next</span></a>
+        </td>
+        </tr>
+        </table>
+        <ul class="pager" ng-show="pager">
+        <li><a ng-show="prevevnt" ng-click="prevnext('event',prevevntlink)" style="border-radius:5px;border:2px solid #DDDDDD;color:black;">Previous</a></li>
+        <li><a ng-show="nextevnt" ng-click="prevnext('event',nextevntlink)" style="border-radius:5px;border:2px solid #DDDDDD;color:black;">Next</a></li>
+        </ul>
+        </div>
+  <div id="place" class="panel panel-default  tab-pane fade" ng-show="pltab">
+  <!--<div class="panel-body">-->
+    <table ng-show="header" class="table table-hover">
+        <tr><th>#</th><th>Profile Photo</th><th>Name</th><th>Favourites</th><th>Details</th></tr>
+        <tr ng-repeat="i in pldata track by $index"><td>{{$index+1}}</td>
+          <td><img src={{i.picture.url?i.picture.url:i.picture.data.url}} style="height:40px;width:40px;"></td>
+          <td>{{i.name}}</td>
+          <td><button class="btn btn-default" id={{i.id}} ng-class = "{mark: localstorage_marked(i.id)}" ng-click="localstorage_add(i,'places')" style="width:38px;height:38px;"><span class="glyphicon glyphicon-star"></span></button></td>
+          <td><a  href="#container1" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right" style="border:1px solid #DDDDDD;color:black;padding:5px 5px 5px 5px;" aria-hidden="true" ng-click="albPosts(i.id,'place',i)"></span>
+          <span class="sr-only">Next</span></a>
+          </td>
+          </tr>
+          </table>
+          <ul class="pager" ng-show="pager">
+          <li><a ng-show="prevplc" ng-click="prevnext('place',prevplclink)" style="border-radius:5px;border:2px solid #DDDDDD;color:black;">Previous</a></li>
+          <li><a ng-show="nextplc" ng-click="prevnext('place',nextplclink)" style="border-radius:5px;border:2px solid #DDDDDD;color:black;">Next</a></li>
+          </ul>
+          </div>
+    <div id="group" class="panel panel-default  tab-pane fade" ng-show="gtab">
+    <!--<div class="panel-body">-->
+      <table ng-show="header" class="table table-hover">
+          <tr><th>#</th><th>Profile Photo</th><th>Name</th><th>Favourites</th><th>Details</th></tr>
+          <tr ng-repeat="i in gdata track by $index"><td>{{$index+1}}</td>
+            <td><img src={{i.picture.url?i.picture.url:i.picture.data.url}} style="height:40px;width:40px;"></td>
+            <td>{{i.name}}</td>
+            <td><button class="btn btn-default" id={{i.id}} ng-class = "{mark: localstorage_marked(i.id)}"  ng-click="localstorage_add(i,'groups')" style="width:38px;height:38px;"><span class="glyphicon glyphicon-star"></span></button></td>
+            <td><a  href="#container1" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" style="border:1px solid #DDDDDD;color:black;padding:5px 5px 5px 5px;" aria-hidden="true" ng-click="albPosts(i.id,'group',i)"></span>
+            <span class="sr-only">Next</span></a>
+            </td>
+            </tr>
+           </table>
+           <ul class="pager" ng-show="pager">
+           <li><a ng-show="prevgrp" ng-click="prevnext('group',prevgrplink)" style="border-radius:5px;border:2px solid #DDDDDD;color:black;">Previous</a></li>
+           <li><a ng-show="nextgrp" ng-click="prevnext('group',nextgrplink)" style="border-radius:5px;border:2px solid #DDDDDD;color:black;">Next</a></li>
+           </ul>
+           </div>
+
+  <!--  <div id="favouritedata" class="panel panel-default  tab-pane fade">
+      <div class="panel-body">
+        <table ng-show="header" class="table table-hover">
+            <tr><th>#</th><th>Profile Photo</th><th>Name</th><th>Favourites</th><th>Details</th></tr>
+            <tr ng-repeat="i in edata track by $index">
+            <td>{{$index}}</td>
+            <td><img src={{i.picture.url}} width="40px" height="40px"></td>
+            <td>{{i.name}}</td>
+            <td><button class="btn btn-default" style="width:38px;height:38px;" ng-click=""><span class="glyphicon glyphicon-star-empty"></span></button></td>
+            <td><a  href="#container1" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" ng-click="albPosts(i.id,'i.typeval')"></span>
+            <span class="sr-only">Next</span></a>
+            </td>
+            </tr>
+           </table>
+         </div>-->
+
+     <div id="favourite" class="panel panel-default tab-pane fade">
+          <table ng-show="header" class="table table-hover">
+          <tr><th>#</th><th>Profile Photo</th><th>Name</th><th>Type</th><th>Favourites</th><th>Details</th></tr>
+          <tr ng-repeat="i in fdata track by $index"><td>{{$index+1}}</td>
+          <td><img src={{i.picture.url?i.picture.url:i.picture.data.url}} style="height:40px;width:40px;"></td>
+          <td>{{i.name}}</td>
+          <td>{{i.type1}}</td>
+          <td><button  class="btn btn-default" style="height:40px;width:40px;" ng-click="localstorage_del($index)"><span class="glyphicon glyphicon-trash"></span></button>
+          <td><a  href="#container1" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right" style="border:1px solid #DDDDDD;color:black;padding:5px 5px 5px 5px;" aria-hidden="true" ng-click="albPosts(i.id,i.type1,i)"></span>
+         <span class="sr-only">Next</span></a>
+         </td>
+         </tr>
+         </table>
+         </div>
+
+</div>
+</br></br></br></br></br>
+<div class="progress" ng-show="progbar" >
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+    <span class="sr-only">45% Complete</span>
+  </div>
+</div>
+</div>
+
+  <div class="item" ng-show="albposts">
+<a href="#container1" role="button" data-slide="prev">
+    <div class = "page-header">
+    <span class ="glyphicon glyphicon-chevron-left" aria-hidden="true" style="padding:2px 5px 5px 2px; color:black;font-size:17px;border:1px solid #DDDDDD">Back</span></a>
+
+
+    <button style="float:right" class="btn btn-default btn-md" ng-click="fbposting(imgaddr,usrname)"><span><img src="http://cs-server.usc.edu:45678/hw/hw8/images/facebook.png" style="width:30px;height:30px"></span></button>
+        <button ng-class = "{mark: localstorage_marked(row1)}" ng-click="localstorage_add(row3,type2)" class="btn btn-default btn-lg" name={{row1}} style="float:right">
+            <span class ="glyphicon glyphicon-star"></span>
+        </button>
+
+        </div>
+
+    <div class="panel panel-default col-sm-6">
+    <div class="panel-heading">Albums</div>
+
+
+      <div ng-show="progbar" class="progress" style="width: 70%;margin:0 auto">
+      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+      <span class="sr-only">60% Complete</span>
+      </div>
+      </div>
+    <div ng-show="albpanel">
+    <div class="panel-body">
+
+    <div ng-if="noalbsdata">
+        <div class="panel"> <h4 style="background-color:#FCF7E4;color:brown;text-align:center">No data found
+        </h4> </div>
+        </div>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default" ng-repeat="albums in albsdata">
+                <div class="panel-heading" >
+                <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}">
+                {{albums.name}}</a>  </h3>
+                </div>
+            <div id="collapse{{$index}}" class="panel-collapse collapse in">
+                <div class="panel-body" ng-repeat="image in albums.photos">
+                <img ng-src="https://graph.facebook.com/v2.8/{{image.id}}/picture?type(medium)&access_token=EAAYxNNTZAgS8BADaTVN1et9WovksxqhTqSsAFijZCaw7XpVIv0mdpPjcx8WLswjhcZBMXYrwEZCAPdCA5g2ftKaSSWUO1JZC4kSFpc6UwZCrMZAO0xqCIBFZAcV0u2R0ObJhZCNVnBqj7RqbygI9IMNaZAGBtubVVMIN4ZD" class="img-responsive img-rounded center-block "></br>
+                </div>
+            </div>
+            </div>
+        </div>
+</div>
+
+</div>
+</div>
+   <div class="panel panel-default col-sm-6">
+        <div class="panel-heading">Posts</div>
+
+     <div ng-show="progbar" class="progress" style="width:70%;margin:0 auto">
+     <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+     <span class="sr-only">50% Complete</span>
+     </div>
+     </div>
+   <div ng-show="postpanel">
+       <div class="panel-body">
+
+        <div ng-if="noposts">
+            <div class="panel" ><h4 style="background-color:#FCF7E4;color:brown;text-align:center">No data found
+            </h4></div>
+        </div>
+        <div class="panel-body" ng-repeat="post in posts">
+            <div class="panel panel-default">
+                <div class="panel-body"><img class=" col-sm-2 img-responsive"  src={{imgaddr}}> <div style="float:left"><h4>{{usrname}}</h4><span style="color:gray " class="ng-sm-4"><time>{{post.created_time.date | amDateFormat: 'YYYY MM DD, h:mm:ss a'}}</time></span></div></div>
+            <div style="text-align:center;padding:5px;"> {{post.message?post.message:post.story}}</div>
+            </div>
+
+       </div>
+
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+  </body>
+</html>
